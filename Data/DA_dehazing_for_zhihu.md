@@ -39,7 +39,7 @@
   - 我们以端到端的方式训练图像翻译网络和除雾网络，以便它们可以互相改进。
     如图1所示，与最近EPDN的去雾效果相比，我们的模型产生的图像更清晰[25]。
 
-    ![figure1](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing/figure1.png)
+    ![figure1](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure1.png)
 
 <center>图1 真实有雾图像的去雾结果</center>
 
@@ -80,7 +80,7 @@
 - 为了解决这个问题，我们提出了一种域自适应框架，该框架包括两个主要部分：图像翻译网络 <img src="https://www.zhihu.com/equation?tex=G_{S→R}" alt="G_{S→R}" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=G_{R→S}" alt="G_{R→S}" class="ee_img tr_noresize" eeimg="1"> ，以及两个除雾网络 <img src="https://www.zhihu.com/equation?tex=G_S" alt="G_S" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=G_R" alt="G_R" class="ee_img tr_noresize" eeimg="1"> 。图像翻译网络将图像从一个域翻译到另一个域，以减小它们之间的差异。然后，去雾网络使用翻译后的图像和源图像（例如，合成的或真实的）执行图像去雾。
 - 如图2所示，所提出的模型将真实的模糊图像 <img src="https://www.zhihu.com/equation?tex=x_r" alt="x_r" class="ee_img tr_noresize" eeimg="1"> 和合成图像 <img src="https://www.zhihu.com/equation?tex=x_s" alt="x_s" class="ee_img tr_noresize" eeimg="1"> 及其对应的深度图像 <img src="https://www.zhihu.com/equation?tex=d_s" alt="d_s" class="ee_img tr_noresize" eeimg="1"> 用作输入。我们首先使用两个图像翻译器获得相应的转换图像 <img src="https://www.zhihu.com/equation?tex=x_{s→r}=G_{S→R}(x_s,d_s)" alt="x_{s→r}=G_{S→R}(x_s,d_s)" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=x_{r→s}=G_{R→S}(x_r)" alt="x_{r→s}=G_{R→S}(x_r)" class="ee_img tr_noresize" eeimg="1"> 。然后，将 <img src="https://www.zhihu.com/equation?tex=x_s" alt="x_s" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=x_{r→s}" alt="x_{r→s}" class="ee_img tr_noresize" eeimg="1"> 传递给 <img src="https://www.zhihu.com/equation?tex=G_S" alt="G_S" class="ee_img tr_noresize" eeimg="1"> ，将 <img src="https://www.zhihu.com/equation?tex=x_r" alt="x_r" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=x_{r→s}" alt="x_{r→s}" class="ee_img tr_noresize" eeimg="1"> 传递给 <img src="https://www.zhihu.com/equation?tex=G_R" alt="G_R" class="ee_img tr_noresize" eeimg="1"> 进行图像去雾。
 
-![figure2](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing/figure2.png)
+![figure2](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure2.png)
 
 <center>图2 本文提出的用于图像去雾的域自适应框架的架构。</center>
 
@@ -97,13 +97,13 @@
   " class="ee_img tr_noresize" eeimg="1">
   其中 <img src="https://www.zhihu.com/equation?tex=⊙" alt="⊙" class="ee_img tr_noresize" eeimg="1"> 是按元素的乘法。在翻译器 <img src="https://www.zhihu.com/equation?tex=G_{S→R}" alt="G_{S→R}" class="ee_img tr_noresize" eeimg="1"> 中，我们将深度图作为指导，并使用SFT层来变换倒数第二层卷积层的特征。
 
-  ![figure3](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing/figure3.png)
+  ![figure3](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure3.png)
 
   <center>图3 STL层的结构</center>
 
   如图4所示，翻译后，合成图像相对更接近真实世界的有雾图像。
 
-![figure4](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing/figure4.png)
+![figure4](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure4.png)
 
 <center>图4 在两个合成有雾图像上的翻译结果。</center>
 
