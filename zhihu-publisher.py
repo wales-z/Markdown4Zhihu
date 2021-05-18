@@ -5,7 +5,6 @@
 
 import os, re
 import argparse
-import codecs
 import subprocess
 import chardet
 import functools
