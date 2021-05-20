@@ -39,7 +39,7 @@
   - 我们以端到端的方式训练图像翻译网络和除雾网络，以便它们可以互相改进。
     如图1所示，与最近EPDN的去雾效果相比，我们的模型产生的图像更清晰[25]。
 
-    ![figure1](.\figure1.png)
+    ![figure1](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure1.png)
 
 <center>图1 真实有雾图像的去雾结果</center>
 
@@ -80,7 +80,7 @@
 - 为了解决这个问题，我们提出了一种域自适应框架，该框架包括两个主要部分：图像翻译网络 <img src="https://www.zhihu.com/equation?tex=G_{S→R}" alt="G_{S→R}" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=G_{R→S}" alt="G_{R→S}" class="ee_img tr_noresize" eeimg="1"> ，以及两个除雾网络 <img src="https://www.zhihu.com/equation?tex=\mathcal G_S" alt="\mathcal G_S" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=\mathcal G_R" alt="\mathcal G_R" class="ee_img tr_noresize" eeimg="1"> 。图像翻译网络将图像从一个域翻译到另一个域，以减小它们之间的差异。然后，去雾网络使用翻译后的图像和源图像（例如，合成的或真实的）执行图像去雾。
 - 如图2所示，所提出的模型将真实的模糊图像 <img src="https://www.zhihu.com/equation?tex=x_r" alt="x_r" class="ee_img tr_noresize" eeimg="1"> 和合成图像 <img src="https://www.zhihu.com/equation?tex=x_s" alt="x_s" class="ee_img tr_noresize" eeimg="1"> 及其对应的深度图像 <img src="https://www.zhihu.com/equation?tex=d_s" alt="d_s" class="ee_img tr_noresize" eeimg="1"> 用作输入。我们首先使用两个图像翻译器获得相应的转换图像 <img src="https://www.zhihu.com/equation?tex=x_{s→r}=G_{S→R}(x_s,d_s)" alt="x_{s→r}=G_{S→R}(x_s,d_s)" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=x_{r→s}=G_{R→S}(x_r)" alt="x_{r→s}=G_{R→S}(x_r)" class="ee_img tr_noresize" eeimg="1"> 。然后，将 <img src="https://www.zhihu.com/equation?tex=x_s" alt="x_s" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=x_{r→s}" alt="x_{r→s}" class="ee_img tr_noresize" eeimg="1"> 传递给 <img src="https://www.zhihu.com/equation?tex=\mathcal G_S" alt="\mathcal G_S" class="ee_img tr_noresize" eeimg="1"> ，将 <img src="https://www.zhihu.com/equation?tex=x_r" alt="x_r" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=x_{r→s}" alt="x_{r→s}" class="ee_img tr_noresize" eeimg="1"> 传递给 <img src="https://www.zhihu.com/equation?tex=\mathcal G_R" alt="\mathcal G_R" class="ee_img tr_noresize" eeimg="1"> 进行图像去雾。
 
-![figure2](.\figure2.png)
+![figure2](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure2.png)
 
 <center>图2 本文提出的用于图像去雾的域自适应框架的架构。</center>
 
@@ -97,21 +97,21 @@
   " class="ee_img tr_noresize" eeimg="1">
   其中 <img src="https://www.zhihu.com/equation?tex=⊙" alt="⊙" class="ee_img tr_noresize" eeimg="1"> 是按元素的乘法。在翻译器 <img src="https://www.zhihu.com/equation?tex=G_{S→R}" alt="G_{S→R}" class="ee_img tr_noresize" eeimg="1"> 中，我们将深度图作为指导，并使用SFT层来变换倒数第二层卷积层的特征。
 
-  ![figure3](.\figure3.png)
+  ![figure3](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure3.png)
 
   <center>图3 STL层的结构</center>
 
   如图4所示，翻译后，合成图像相对更接近真实世界的有雾图像。
 
-![figure4](.\figure4.png)
+![figure4](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure4.png)
 
 <center>图4 在两个合成有雾图像上的翻译结果。</center>
 
 - 我们在去雾中展示了翻译器 <img src="https://www.zhihu.com/equation?tex=G_{S→R}" alt="G_{S→R}" class="ee_img tr_noresize" eeimg="1"> 的详细配置。我们还采用了CycleGAN [38]提供的架构，用于生成器 <img src="https://www.zhihu.com/equation?tex=G_{R→S}" alt="G_{R→S}" class="ee_img tr_noresize" eeimg="1"> 和鉴别器(discriminators)（ <img src="https://www.zhihu.com/equation?tex=D^{img}_R" alt="D^{img}_R" class="ee_img tr_noresize" eeimg="1"> 和 <img src="https://www.zhihu.com/equation?tex=D^{img}_S" alt="D^{img}_S" class="ee_img tr_noresize" eeimg="1"> ）。
 
-<center>去雾 图像翻译模块的配置。“ Conv”表示卷积层，“ Res”表示残差块，“ Upconv”表示通过转置卷积算子的上采样层，“ Tanh”表示非线性Tanh层。</center>
+<center>表1 图像翻译模块的配置。“ Conv”表示卷积层，“ Res”表示残差块，“ Upconv”表示通过转置卷积算子的上采样层，“ Tanh”表示非线性Tanh层。</center>
 
-![table1](.\table1.png)
+![table1](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/table1.png)
 
 
 
@@ -296,11 +296,11 @@ L&=L_{tran}+\lambda_m(L_{rm}+L_{sm})+\lambda_d(L_{rd}+L_{sd})\\
 我们使用两个综合数据集，SOTS [13]和HazeRD [36]，来评估我们提出的方法的性能。
 这两个数据集上不同方法的去雾图像如图5和6所示。从图5(b)中，我们可以观察到NLD [2]和GFN [27]都有一些颜色失真，结果看起来不接近真实。在某些情况下，EPDN [25]的除雾结果也比ground  truth更暗，如图5(g)所示。此外，DehazeNet [4]，AOD-Net [12]和DCPDN [35]在去雾后的图像中仍然存在一些残留的雾。与这些方法相比，我们的算法还原的图像具有更清晰（sharp）的结构和细节，更接近ground  truth。在图6的HazeRD数据集的除雾结果中可以找到相似的结果，我们的算法生成的结果具有更好的视觉效果。
 
-![figure5](.\figure5.png)
+![figure5](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure5.jpg)
 
 <center>图5 在SOTS[13]数据集上的可视化对比</center>
 
-![figure6](.\figure6.png)
+![figure6](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure6.jpg)
 
 <center>图6 在HazeRD[36]数据集上的可视化对比</center>
 
@@ -308,13 +308,13 @@ L&=L_{tran}+\lambda_m(L_{rm}+L_{sm})+\lambda_d(L_{rd}+L_{sd})\\
 
 <center>表2 两个合成数据集上的除雾结果的定量比较（平均PSNR / SSIM）</center>
 
-![table2](.\table2.png)
+![table2](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/table2.png)
 
 ### 4.3 在真实图像上的实验
 
 为了评估我们的方法在真实图像上的泛化能力（generalization），我们比较了从URHI数据集获得的真实有雾图像上不同方法的视觉结果。如图7所示，NLD [2]遭受了严重的颜色失真（例如，参见图7(b))中的天空）。从图7(f)中我们可以看出GFN [27]在某些情况下也遭受了颜色失真，并且去雾后的结果看起来比我们的方法更暗。另外，由DehazeNet [4]，AOD-Net [12]和DCPDN [35]进行的去雾结果具有一些残留的雾的伪影，如图7(c-e)的第五行所示。尽管EPDN [25]比上述方法具有更好的视觉效果，但除雾效果的亮度普遍比我们的方法低。总体而言，我们提出的方法可还原更多细节并获得视觉上pleasing的图像。
 
-![figure7](.\figure7.png)
+![figure7](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure7.jpg)
 
 <center>图7 在真实有雾图像上的可视化对比</center>
 
@@ -330,13 +330,13 @@ L&=L_{tran}+\lambda_m(L_{rm}+L_{sm})+\lambda_d(L_{rd}+L_{sd})\\
 我们在合成和真实有雾图像上，针对这四种除雾模型，对提出的域自适应方法进行了比较。
 视觉和定量结果显示在表3和图8中，结果表明我们的方法在PSNR和SSIM以及视觉效果方面达到了图像去雾的最佳性能。如图8(b)所示，由于域迁移，**SYN**方法会导致颜色失真或较暗的伪影（例如，参见天空部分和红色矩形）。相比之下，如图8(c)所示，在翻译后的图像**（S2R）**上训练的去雾模型 <img src="https://www.zhihu.com/equation?tex=\mathcal G_R" alt="\mathcal G_R" class="ee_img tr_noresize" eeimg="1"> 获得了更好的图像质量，这证明翻译器有效地减少了合成数据与真实图像之间的差异。此外，图8(b)和(d)显示具有无监督损失**（SYN + U）**的去雾模型比**SYN**可以产生更好的结果，这证明了无监督损失的有效性。最后，我们可以观察到，图8(e)中提出的同时具有转换器和无监督损耗的方法产生了更清晰和视觉上更pleasing的结果（例如，天空更明亮）。表3中通过应用图像平移和无监督损失得出的定量结果也与图8中的定性结果一致。
 
-![figure8](figure8.png)
+![figure8](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/figure8.jpg)
 
 <center>图8 真实有雾图像上几种除雾模型除雾结果的比较</center>
 
 <center>表3 合成域上不同除雾模型的定量结果</center>
 
-![table3](.\table3.png)
+![table3](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/DA_dehazing_for_zhihu/table3.png)
 
 总之，这些消融研究表明，图像翻译模型和无监督损失对于减小合成数据与真实世界图像之间的域差异以及提高图像在合成域和真实域上的除雾性能很有用。
 
