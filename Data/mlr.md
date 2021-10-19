@@ -20,7 +20,7 @@
 
 相反，对于许多信息检索应用，包括多媒体推荐，我们用距离度量来参数化排序函数是很自然的。
 
-本方法基于结构化SVUM（Tsochantaridis et al.，2005），在一个统一的算法框架下很容易支持各种排序评估方法。将度量学习解释为一个信息检索问题，使我们能够将损失应用于排序级别，而不是pair-wise的距离，并且能够使用比以前的度量学习算法更 general 的相似性概念，包括非对称和不可传递的相关性定义。
+本方法基于结构化SVM（Tsochantaridis et al.，2005），在一个统一的算法框架下很容易支持各种排序评估方法。将度量学习解释为一个信息检索问题，使我们能够将损失应用于排序级别，而不是pair-wise的距离，并且能够使用比以前的度量学习算法更 general 的相似性概念，包括非对称和不可传递的相关性定义。
 
 ### 1.1 相关工作
 
@@ -34,21 +34,21 @@ Weinberger等人（2006）将目标 neighbors 定义为原始特征空间中 $k$
 
 邻域成分分析（NCA）（Goldberger et al.，2005）通过在随机邻域选择规则下最大化正确检索点的期望数量来缓解问题。虽然这种松弛有直观的意义，但得到的优化是非凸的，它不能识别和优化学习空间中的前 $k$ 个最近邻。Globerson&Roweis（2006）优化了一个类似的随机邻域选择规则，同时试图将每个类collapse到一个点。这种思想在输出空间上比NCA具有更多的正则性，并导致了一个凸优化问题，但在实际中，整个类可以被collapse到不同的点的假设很少成立。
 
-我们的方法的核心是基于结构化SVM框架（Tsochantaridis等人，2005）。我们在第2节中提供了一个简短的概述，并在第4节中讨论了ranking-specific的扩展。
+我们的方法的核心是基于结构化SVM框架（Tsochantaridis等人，2005）。我们在第2节中提供了一个简短的概述，并在第4节中讨论了与排序相关的拓展。
 
 ### 1.2 准备工作
 
 令 $X \subset {\mathbb R}^d，$ 表示训练集（语料库），且 $|X|=n$，$Y$ 表示 $X$ 的排列的集合。对于一个 query $q$ ，让 $X_q^+，X_q^-$分别表示训练集中相关的点和不相关的点的子集。对于排序 $y \in Y$ 和两个点 $x,y \in X$ ，用 $i \prec_y j(i \succ_y j)$ 表示在 $y$  中，$i$ 排在 $j$ 前面 。
 
-$W \succeq 0，W \in {\mathbb R}^{d \times d}$ 表示一个对称的、半正定矩阵。对于 $i,j \in {\mathbb R}$ ，由 $W$ 定义的度量下的距离表示为： $||i-j||_W=\sqrt{(i-j)^T W(i-j)}$ 。对于矩阵 $A,B \in {\mathbb R}^{d \times d}$ ，将他们的Frobenius内积表示为 $\big < A,B\big >_F = {\rm tr}(A^TB)$ 。最后， <img src="mlr/1X.png" alt="1X" style="zoom: 67%;" />表示在 $X$ 上的 0-1 指示函数。
+$W \succeq 0，W \in {\mathbb R}^{d \times d}$ 表示一个对称的、半正定矩阵。对于 $i,j \in {\mathbb R}$ ，由 $W$ 定义的度量下的距离表示为： $||i-j||_W=\sqrt{(i-j)^T W(i-j)}$ 。对于矩阵 $A,B \in {\mathbb R}^{d \times d}$ ，将他们的Frobenius内积表示为 $\big < A,B\big >_F = {\rm tr}(A^TB)$ 。最后， $\mathbb 1 X$ 表示在 $X$ 上的 0-1 指示函数。
 
 
 
-### 2 结构化SVM
+## 2 结构化SVM
 
 结构化 SVM 可以被视为多分类 SVM（Crammer & Singer，2002）的泛化，其中可能的预测结果集合从label泛化到结构，例如 parse tree、排列、序列对齐等。（Tsochantaridis 等人，2005 ）。  Crammer & Singer (2002) 的多分类 SVM 公式在真实label $y^∗$ 和所有其他label $y$ 之间强制每个训练点 $q \in X$ 的边距：
 $$
-\forall y \neq y^*: w^T_{y^*}q \geq W^T_y +1 -\xi,
+\forall y \neq y^*: w^T_{y^*}q \geq w^T_y +1 -\xi,
 $$
 其中 $\xi \geq 0$ 是一个松弛变量，用来允许训练集中的边界违规。类似地，结构化SVM在真实结构 $y^*$ 和所有其他可能的结构 $y$ 之间应用边距：
 $$
@@ -109,7 +109,7 @@ $$
 \phi_M(q,i) \doteq -(q-i)(q-i)^T
 \tag4
 $$
-（符号的变化保留了标准结构化 SVM 中使用的顺序。）因此，将语料库按 $||q − i||^2_W $ 升序排序等效于按 $\big< W,\phi_M(q,i)\big >_F$ 降序排序。 类似地，通过将 $\psi_M$ 与 $\psi_{po}$ 一起使用，使泛化的内积 $\big< W,\psi_{po}(q,y)\big>_F$ 最大化的排序 $y$ 恰好是 $X$ 在 $W$ 定义的度量下按与 $q$ 的距离升序的排序。
+（符号的变化保留了标准结构化 SVM 中使用的顺序。）因此，将语料库按 $||q − i||^2_W $​​ 升序排序等效于按 $\big< W,\phi_M(q,i)\big >_F$​​ 降序排序。 类似地，通过将 $\phi_M$​​ 与 $\psi_{po}$​​ 一起使用，使泛化的内积 $\big< W,\psi_{po}(q,y)\big>_F$​​ 最大化的排序 $y$​​ 恰好是 $X$​​ 在 $W$​​ 定义的度量下按与 $q$​​ 的距离升序的排序。
 
 因此，通过将公式 1 和 2 中的向量积推广到 Frobenius 内积，我们可以推导出一种算法来学习一个度量，此度量针对 list-wise 的排序损失测量值进行优化。
 
@@ -174,4 +174,91 @@ $$
 \Delta(y^*,y)={\rm Score}(y^*)-{\rm Score}(y)=1-{\rm Score}(y)
 $$
 
+### AUC
+
+ROC 曲线下面积 (AUC) 是一种常用的度量，它表征了真阳性 (true positives) 和假阳性 (false positives) 之间随阈值参数变化的权衡。在我们的例子中，此参数对应于返回的物品数（或预测为相关）。 AUC 可以通过从 1 中减去不正确排序对所占比例（即，$j\prec_y i$，$i$ 相关而 $j$ 不相关）来计算。这个公式导致了一个简单而有效的分离预言机，由 Joachims (2005) 描述 。
+
+请注意，AUC 与位置无关 (position-independent)：列表底部不正确的成对排序对分数的影响与列表顶部的错误一样。 实际上，AUC 是对list-wise cohesion的全局度量。
+
+### Precision-at-$k$
+
+Precision-at-$k$ (Prec@$k$) 是相关的结果在返回的前 $k$ 个结果中的分数/所占比例 (fraction)。 因此，Prec@$k$ 是一个高度本地化的评估标准，它捕获仅前几个结果重要的应用程序的排名质量，例如，网络搜索。
+Prec@$k$ 的分离预言机利用了两个事实：Prec@$k$ 只有 $k + 1$ 个可能的值$(0, 1/k, 2/k, . . , 1)$，并且对于任何固定值，最佳的 $y$ 完全由判别分数引起的排序决定。 然后，我们可以评估数据的所有 $k + 1$ 次交织 (interleaving)，以找到达到最大值的 $y$。 有关详细信息，请参阅 Joachims (2005)。
+与 Prec@$k$ 密切相关的是 $k$-最近邻预测分数。 在二分类设置中，两者通过下式联系起来：
+
+<img src="mlr/knn.png" alt="knn" style="zoom: 67%;" />
+
+而且 Prec@$k$ 分离预言机可以很容易地适应 $k$-最近邻。 然而，在多分类设置下，交织技术失败了，因为正确分类所需的相关点分数不仅取决于每个点的相关性或不相关性，还取决于标签本身。
+
+在非正式实验中，我们注意到为（二进制）KNN 和 Prec@$k$ 训练的指标之间的性能没有量化的差异，我们在第 5 节的实验中省略了 KNN。
+
+### Average Precision
+
+Average Precision（或Mean Average Precision，MAP）（Baeza-Yates 和 Ribeiro-Neto，1999）是排序 $y$ 的Precision-at-$k$ 分数，在相关文档的所有位置 $k$ 上取平均值：
+
+<img src="mlr/AP.png" alt="AP" style="zoom:67%;" />
+
+Yue等人 (2007) 提供了一个Average Precision的贪心 (greedy) 分离预言机，运行时间为 $O(|X^+ _q|·|X^−_q|)$。
+我们的实现使用了一种相对简单的动态编程方法，它具有等效的渐近运行时间。（为简洁起见，此处省略了详细信息。）
+
+### Mean Reciprocal Rank
+
+Mean Reciprocal Rank (MRR) 是 $y$ 中第一个相关文档的倒数，因此非常适合仅第一个结果重要的应用程序。
+与 Prec@$k$ 一样，对于 MRR ，有一组有限的可能得分值$(1,1/2,1/3,...,1/(1+|X^−_q|))$，并且对于固定的 MRR 得分，最优 $y$ 完全确定。 搜索maximizer的得分值也同样简单直接。 对优化 MRR 的更完整处理见 Chakrabarti 等人(2008) 
+
+### Normalized Discounted Cumulative Gain
+
+Normalized Discounted Cumulative Gain (NDCG) (Jarvelin & Kekalainen, 2000) 类似于 MRR，但不是只奖励第一个相关文档，而是所有前 $k$ 个文档都以递减的折扣因子 (discount factor) 计分。在当前具有二元相关性级别的设置中，我们采用的公式表示为：
+
+<img src="mlr/ndcg.png" alt="ndcg" style="zoom:67%;" />
+
+Chakrabarti等人 (2008) 提出了一种用于 NDCG 分离预言机的动态规划算法，我们在这里采用了该算法。
+
+## 5 实验
+
+为了评估 MLR 算法，我们在小规模和大规模数据集上进行了实验，如下两节所述。 在所有实验中，我们将accuracy 阈值固定为 $\epsilon = 0.01$ 。
+
+### 5.1 在UCI数据上的分类
+
+我们首先在来自 UCI 存储库 (Asuncion & Newman, 2007) 的五个数据集 (Balance、Ionosphere、WDBC、Wine 和 IsoLet) 上测试了我们算法的 accuracy 和降维性能。 对于前四组，我们生成了 50 个随机的 80/20 训练和测试分割。 数据的每个维度都由训练集的统计数据进行 z-score。
+
+对于 IsoLet，我们重复了 Weinberger 等人(2006)的实验，通过生成训练集的 10 个随机 80/20 分割用于测试和验证，然后在提供的测试集上进行测试。 我们通过 PCA（根据训练集计算得出）投影到 170 个维度，足以捕获 95% 的方差。
+
+表 1 包含使用的数据集的摘要。
+
+<img src="mlr/table1.png" alt="table1" style="zoom:67%;" />
+
+我们使用 MLR 的五种变体在每个数据集上训练指标：MLR-AUC、MLR-Prec@$k$、MLR-MAP、MLR-MRR 和 MLR-NDCG。为了比较，我们还使用大边距最近邻 (LMNN) (Weinberger et al., 2006)、邻域组件分析 (NCA) 和 Collapsing Classes 度量学习 (MLCC）。
+
+为了评估每种算法的性能，我们在学习的度量中测试了 $k$ 最近邻分类的准确性。 分类结果见表2 。 除了 Balance 集上的 NCA 和 MLCC 之外，Balance、Ionosphere、WDBC 和 Wine 的所有结果都在误差范围内。 一般来说，MLR 的准确度与比较中的最佳算法相当，而不依赖于选择目标neighbors的输入特征。
+
+<img src="mlr/table2.png" alt="table2" style="zoom:67%;" />
+
+图 2 说明了 MLR 算法的降维特性。 在所有情况下，MLR 都实现了输入空间维度的显着降低，可与最佳竞争算法相媲美。
+
+<img src="mlr/figure2.png" alt="figure2" style="zoom:67%;" />
+
+### 5.2 eHarmony 数据
+
+为了在信息检索上下文中的大型数据集上评估 MLR，我们对 eHarmony 提供的匹配数据的训练了指标：(eHarmony 是一种通过个性特征匹配用户的在线约会服务)。
+
+对于我们的实验，我们专注于数据和问题的以下简化：每个匹配都以一对用户呈现，匹配成功时带有正标签（即用户表达了共同兴趣），否则带有负标签。 每个用户由 ${\mathbb R}^{56}$ 中的一个向量表示，该向量描述了用户的个性、兴趣等。如果两个用户被呈现为成功匹配，我们认为两个用户是相互相关的，如果匹配不成功，我们认为两个用户是不相关的。对于不匹配的对，不假设不相关。
+
+在两个等长的连续时间间隔内收集匹配信息，并分为训练（间隔 1）和测试（间隔 2）。 训练集包含大约 295000 个唯一用户，并非所有用户都定义了有用的queries：一些只出现在正匹配中，而其他只出现在负匹配中。由于这些用户不提供判别数据，我们从 query 用户集中省略了他们。 请注意，此类用户仍然是信息丰富的，并且作为要排序的结果包含在训练集中。
+
+我们进一步减少了训练查询的数量，只包括至少有 2 个成功匹配和 5 个不成功匹配的用户，留下大约 22000 个训练 query。 数据汇总见表 3。
+
+<img src="mlr/table3.png" alt="table3" style="zoom:67%;" />
+
+我们使用 MLR-AUC、MLR-MAP 和 MLR-MRR 训练指标。由于每个query的最小正 (positive) 结果数量很少，我们在这个实验中省略了 MLR-P@$k$ 和 MLR-NDCG。 请注意，由于我们做的是信息检索，而不是分类，所以上一节中比较的其他度量学习算法不适用。为了比较，我们使用 SVM-MAP (Yue et al., 2007) 和特征图 $\phi(q,i)=(q−i)$ 训练模型。 在训练 SVM-MAP 时，我们使用 $C \in \{10^{−2}, 10^{−1},...,10^5\}$。
+
+表 4 显示了 MLR 和 SVM-MAP 的精度和时间结果。  MLR-MAP 和 MLR MRR 模型比 SVM-MAP 模型显示出轻微但统计意义上显着的改进。 请注意，MLR 算法的训练时间比 SVM-MAP 少得多，并且对分离预言机的调用更少。
+
+<img src="mlr/table4.png" alt="table4" style="zoom:67%;" />
+
+尽管在此检索任务中，MLR 比 baseline 欧几里得距离有所改进，但似乎线性模型可能不足以捕获数据中的复杂结构。将 MLR 推广到产生非线性变换将是未来研究的重点。
+
+## 6 结论
+
+我们提出了一种度量学习算法，该算法针对基于排序的损失函数进行了优化。通过将问题作为信息检索任务，我们将注意力集中在我们认为感兴趣的关键数量上：由距离引起的数据排列。
 

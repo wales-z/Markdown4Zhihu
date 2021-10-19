@@ -72,7 +72,9 @@ $$
 
 其中 $\lambda_n$ 是用于组合多个评分模式近似的线性乘数。$\lambda_n$ 也被视为 MINDTL 中多个源域之间的相关性值。$\lambda_n$ 被限制在 $[0,1]$ 内，因为现实世界中多个域之间的负关系并不常见。根据最大相关率100%，所有 $\lambda_n$ 的总和限制为1。
 
+![figure5](mindtl/figure5.png)
 
+<center>多评分模式近似</center>
 
 ## 3 优化方法
 
@@ -131,7 +133,7 @@ $$
 -2\sum_{i,j}(X-\lambda_nM_n)_{ij}(M_n)_{ij}=0
 \tag8
 $$
-接下来我们可以通过以下方式迭代更新 $\lambda n$：
+接下来我们可以通过以下方式迭代更新 $\lambda_n$：
 $$
 \lambda_n^{t+1} \leftarrow \lambda_n^t-
 \frac{\delta L}{\delta \lambda_n^t} \times \theta
