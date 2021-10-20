@@ -84,15 +84,7 @@ Collaborative Metric Learning 协同度量学习
 
 在过去十年中，矩阵分解 (MF) 因其卓越的性能而成为最受欢迎的 CF 方法 [25, 19, 1]。 最初的 MF 模型被设计为通过将用户和物品映射到潜在因子空间来对用户的显式反馈建模，这样用户-物品关系（即评分）可以通过他们的潜在因子的点积来捕获。 具体来说，让  <img src="https://www.zhihu.com/equation?tex=r_{ij}" alt="r_{ij}" class="ee_img tr_noresize" eeimg="1"> ​ 表示用户  <img src="https://www.zhihu.com/equation?tex=i" alt="i" class="ee_img tr_noresize" eeimg="1"> ​ 对物品  <img src="https://www.zhihu.com/equation?tex=j" alt="j" class="ee_img tr_noresize" eeimg="1"> ​ 的评价，我们学习用户向量  <img src="https://www.zhihu.com/equation?tex={\bold u}_i ∈ {\mathbb R}^r" alt="{\bold u}_i ∈ {\mathbb R}^r" class="ee_img tr_noresize" eeimg="1"> ​ 和物品向量   <img src="https://www.zhihu.com/equation?tex={\bold v}_j ∈ {\mathbb R}^r" alt="{\bold v}_j ∈ {\mathbb R}^r" class="ee_img tr_noresize" eeimg="1"> ​  ，这样他们的点积  <img src="https://www.zhihu.com/equation?tex={\bold u}_i^T{\bold v}_j" alt="{\bold u}_i^T{\bold v}_j" class="ee_img tr_noresize" eeimg="1"> ​ 近似于  <img src="https://www.zhihu.com/equation?tex=r_{ij}" alt="r_{ij}" class="ee_img tr_noresize" eeimg="1"> ​​​ [25]。 这个公式引出优化问题，最小化已知评分集合的均方误差 (MSE)，
 
-<img src="https://www.zhihu.com/equation?tex=\min_{ <img src="https://www.zhihu.com/equation?tex={\bold u}_*, " alt="{\bold u}_*, " class="ee_img tr_noresize" eeimg="1"> {\bold v}_*} 
-\sum_{r_{ij} \in \cal K}
-(r_{ij}-{\bold u}_i^T{\bold v}_j)^2 + 
-\lambda_u||{\bold u}_i||^2 + \lambda_v ||{\bold v}_j||^2
-" alt="\min_{ <img src="https://www.zhihu.com/equation?tex={\bold u}_*, " alt="{\bold u}_*, " class="ee_img tr_noresize" eeimg="1"> {\bold v}_*} 
-\sum_{r_{ij} \in \cal K}
-(r_{ij}-{\bold u}_i^T{\bold v}_j)^2 + 
-\lambda_u||{\bold u}_i||^2 + \lambda_v ||{\bold v}_j||^2
-" class="ee_img tr_noresize" eeimg="1">
+<img src="https://gitee.com/Wales-Z/image_bed/raw/master/img/image-20211019210114103.png" alt="image-20211019210114103" style="zoom:67%;" />
 
 
 其中  <img src="https://www.zhihu.com/equation?tex=\cal K" alt="\cal K" class="ee_img tr_noresize" eeimg="1"> ​ 是已知评分的集合；   <img src="https://www.zhihu.com/equation?tex=\lambda_u" alt="\lambda_u" class="ee_img tr_noresize" eeimg="1"> ​ 和  <img src="https://www.zhihu.com/equation?tex=\lambda_v" alt="\lambda_v" class="ee_img tr_noresize" eeimg="1"> ​ 是用于正则化  <img src="https://www.zhihu.com/equation?tex={\bold u}_*" alt="{\bold u}_*" class="ee_img tr_noresize" eeimg="1"> ​ 和  <img src="https://www.zhihu.com/equation?tex={\bold v}_*" alt="{\bold v}_*" class="ee_img tr_noresize" eeimg="1"> ​ 的 L2范数的超参数。
@@ -107,15 +99,8 @@ Collaborative Metric Learning 协同度量学习
 
 为了解决这些问题，Hu等人和Pan等人提出加权正则化矩阵分解 (WRMF) [19, 35] ，将所有未观察到的用户-物品交互视为负样本，并使用case weight  <img src="https://www.zhihu.com/equation?tex=c_{ij}" alt="c_{ij}" class="ee_img tr_noresize" eeimg="1"> ​ 来减少这些不确定样本的影响，即
 
-<img src="https://www.zhihu.com/equation?tex=\min_{ <img src="https://www.zhihu.com/equation?tex={\bold u}_*, " alt="{\bold u}_*, " class="ee_img tr_noresize" eeimg="1"> {\bold v}_*} 
-\sum_{r_{ij} \in \cal K} 
-c_{ij}(r_{ij}-{\bold u}_i^T{\bold v}_j)^2 + 
-\lambda_u||{\bold u}_i||^2 + \lambda_v ||{\bold v}_j||^2
-" alt="\min_{ <img src="https://www.zhihu.com/equation?tex={\bold u}_*, " alt="{\bold u}_*, " class="ee_img tr_noresize" eeimg="1"> {\bold v}_*} 
-\sum_{r_{ij} \in \cal K} 
-c_{ij}(r_{ij}-{\bold u}_i^T{\bold v}_j)^2 + 
-\lambda_u||{\bold u}_i||^2 + \lambda_v ||{\bold v}_j||^2
-" class="ee_img tr_noresize" eeimg="1">
+<img src="https://gitee.com/Wales-Z/image_bed/raw/master/img/image-20211019210319455.png" alt="image-20211019210319455" style="zoom:80%;" />
+
 其中case weight  <img src="https://www.zhihu.com/equation?tex=c_{ij}" alt="c_{ij}" class="ee_img tr_noresize" eeimg="1">  对于观察到的正反馈较大，对于未观察到的相互作用较小。
 
 #### 2.3.2 贝叶斯个性化排序（BPR）
@@ -123,17 +108,8 @@ c_{ij}(r_{ij}-{\bold u}_i^T{\bold v}_j)^2 +
 正如上面的讨论所示，对于隐式反馈，“评分”的概念变得不那么准确。 因此，最近的矩阵分解模型开始从估计一组特定的评分转向建模不同物品之间的相对偏好（或顺序）。  Rendle等人[38]提出的贝叶斯个性化排序（BPR）是这种类型的一个著名例子。
 设  <img src="https://www.zhihu.com/equation?tex=\cal D_i" alt="\cal D_i" class="ee_img tr_noresize" eeimg="1"> ​​ 是一组物品对  <img src="https://www.zhihu.com/equation?tex=(j,k)" alt="(j,k)" class="ee_img tr_noresize" eeimg="1"> ，其中用户  <img src="https://www.zhihu.com/equation?tex=i" alt="i" class="ee_img tr_noresize" eeimg="1">  与物品  <img src="https://www.zhihu.com/equation?tex=j" alt="j" class="ee_img tr_noresize" eeimg="1">  有交互但与物品  <img src="https://www.zhihu.com/equation?tex=k" alt="k" class="ee_img tr_noresize" eeimg="1">  没有交互，假设用户  <img src="https://www.zhihu.com/equation?tex=i" alt="i" class="ee_img tr_noresize" eeimg="1"> ​ 可能对物品  <img src="https://www.zhihu.com/equation?tex=j" alt="j" class="ee_img tr_noresize" eeimg="1">  比物品  <img src="https://www.zhihu.com/equation?tex=k" alt="k" class="ee_img tr_noresize" eeimg="1">  更感兴趣，BPR 最小化pair-wise排序损失：
 
-<img src="https://www.zhihu.com/equation?tex=\min_{ <img src="https://www.zhihu.com/equation?tex={\bold u}_*, " alt="{\bold u}_*, " class="ee_img tr_noresize" eeimg="1"> {\bold v}_*} 
-\sum_{i \in \cal I}
-\sum_{(j,k) \in \cal D_i}
--\log \sigma({\bold u}_i^T{\bold v}_j-{\bold u}_i^T{\bold v}_k)^2 + 
-\lambda_u||{\bold u}_i||^2 + \lambda_v ||{\bold v}_j||^2
-" alt="\min_{ <img src="https://www.zhihu.com/equation?tex={\bold u}_*, " alt="{\bold u}_*, " class="ee_img tr_noresize" eeimg="1"> {\bold v}_*} 
-\sum_{i \in \cal I}
-\sum_{(j,k) \in \cal D_i}
--\log \sigma({\bold u}_i^T{\bold v}_j-{\bold u}_i^T{\bold v}_k)^2 + 
-\lambda_u||{\bold u}_i||^2 + \lambda_v ||{\bold v}_j||^2
-" class="ee_img tr_noresize" eeimg="1">
+![image-20211019210252497](https://gitee.com/Wales-Z/image_bed/raw/master/img/image-20211019210252497.png)
+
 其中  <img src="https://www.zhihu.com/equation?tex=\sigma" alt="\sigma" class="ee_img tr_noresize" eeimg="1"> ​ 是sigmoid函数。
 
 通过这个损失函数，BPR 本质上是试图最小化预测用户喜欢的一对物品之间的误差。 这个损失函数也相当于对每个用户优化 ROC 曲线下面积（AUC）[39]。 然而，BPR 损失的一个问题是它没有充分惩罚处于较低排名的物品。 对于 Top-K 推荐任务，其产生的是次优结果，其中只有在 Top-K 内排名的物品才重要 [53]。 改进 Top-K 推荐的一种流行方法是采用加权排序损失，以惩罚较低排名的正项 [50, 27, 28]，这将在第 3.2 节中进一步描述。
@@ -154,11 +130,8 @@ c_{ij}(r_{ij}-{\bold u}_i^T{\bold v}_j)^2 +
 
 我们用用户向量  <img src="https://www.zhihu.com/equation?tex=\bold u_i ∈ \cal R^r" alt="\bold u_i ∈ \cal R^r" class="ee_img tr_noresize" eeimg="1"> ​​ 和物品向量   <img src="https://www.zhihu.com/equation?tex=\bold v_j ∈ \cal R^r" alt="\bold v_j ∈ \cal R^r" class="ee_img tr_noresize" eeimg="1"> ​​​  表示每个用户和每个物品。 我们以欧氏距离的方式学习这些向量，即
 
-<img src="https://www.zhihu.com/equation?tex=d(i,j)=||\bold u_i-\bold v_j||
+<img src="https://gitee.com/Wales-Z/image_bed/raw/master/img/image-20211019210445749.png" alt="image-20211019210445749" style="zoom:80%;" />
 
-" alt="d(i,j)=||\bold u_i-\bold v_j||
-
-" class="ee_img tr_noresize" eeimg="1">
 这个欧式距离将服从用户  <img src="https://www.zhihu.com/equation?tex=i" alt="i" class="ee_img tr_noresize" eeimg="1">  对不同物品的相对偏好，即该用户喜欢的物品将比他不喜欢的其他物品更接近该用户。 我们使用以下损失函数来制定这样的约束：
 
 <img src="https://www.zhihu.com/equation?tex={\cal L_m(d)}=\sum_{(i,j) \in {\cal S}} \sum_{(i,k) \notin {\cal S}}
@@ -172,7 +145,7 @@ w_{ij}[m+d(i,j)^2-d(i,k)^2]_+
 
 图 1 说明了此损失函数产生的梯度。对于用户喜欢的物品，它们的梯度向内移动以创建更小的半径。 对于 imposter 物品，即用户不喜欢但侵入边界 (perimeter) 的物品，它们的梯度从用户向外移动，直到它们被推离边界且距离大于安全边距。
 
-![figure1](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/cml_for_zhihu/figure1.png)
+![image-20211019210516869](https://gitee.com/Wales-Z/image_bed/raw/master/img/image-20211019210516869.png)
 
 该损失函数类似于 LMNN 的损失函数，但有三个重要区别：
 

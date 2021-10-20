@@ -76,7 +76,9 @@
 
 其中  <img src="https://www.zhihu.com/equation?tex=\lambda_n" alt="\lambda_n" class="ee_img tr_noresize" eeimg="1">  是用于组合多个评分模式近似的线性乘数。 <img src="https://www.zhihu.com/equation?tex=\lambda_n" alt="\lambda_n" class="ee_img tr_noresize" eeimg="1">  也被视为 MINDTL 中多个源域之间的相关性值。 <img src="https://www.zhihu.com/equation?tex=\lambda_n" alt="\lambda_n" class="ee_img tr_noresize" eeimg="1">  被限制在  <img src="https://www.zhihu.com/equation?tex=[0,1]" alt="[0,1]" class="ee_img tr_noresize" eeimg="1">  内，因为现实世界中多个域之间的负关系并不常见。根据最大相关率100%，所有  <img src="https://www.zhihu.com/equation?tex=\lambda_n" alt="\lambda_n" class="ee_img tr_noresize" eeimg="1">  的总和限制为1。
 
+![figure5](https://raw.githubusercontent.com/wales-z/Markdown4Zhihu/master/Data/mindtl_for_zhihu/figure5.png)
 
+<center>多评分模式近似</center>
 
 ## 3 优化方法
 
@@ -154,7 +156,7 @@
 -2\sum_{i,j}(X-\lambda_nM_n)_{ij}(M_n)_{ij}=0
 \tag8
 " class="ee_img tr_noresize" eeimg="1">
-接下来我们可以通过以下方式迭代更新  <img src="https://www.zhihu.com/equation?tex=\lambda n" alt="\lambda n" class="ee_img tr_noresize" eeimg="1"> ：
+接下来我们可以通过以下方式迭代更新  <img src="https://www.zhihu.com/equation?tex=\lambda_n" alt="\lambda_n" class="ee_img tr_noresize" eeimg="1"> ：
 
 <img src="https://www.zhihu.com/equation?tex=\lambda_n^{t+1} \leftarrow \lambda_n^t-
 \frac{\delta L}{\delta \lambda_n^t} \times \theta
