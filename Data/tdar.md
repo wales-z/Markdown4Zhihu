@@ -183,7 +183,7 @@ $$
 
 <img src="tdar/formula5678.png" alt="formula5678" style="zoom:80%;" />
 
-其中 $\eta^s, \eta^t, \eta^+, \eta^-$ 是学习率，$\grad_{\bf X}=f(\bf X)$ 是 $f(\bf X)$ 关于$\bf X$ 的梯度。TDAR中的所有参数都用Adam进行训练。TDAR的结构如图2所示。
+其中 $\eta^s, \eta^t, \eta^+, \eta^-$ 是学习率，$\nabla_{\bf X}=f(\bf X)$ 是 $f(\bf X)$ 关于$\bf X$ 的梯度。TDAR中的所有参数都用Adam进行训练。TDAR的结构如图2所示。
 
 ![figure2](tdar/figure2.png)
 

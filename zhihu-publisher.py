@@ -31,7 +31,7 @@ def process_for_zhihu():
     print(chatest)
     with open(str(args.input),"r",encoding=chatest["encoding"]) as f:
         lines = f.read()
-        lines = image_ops(lines)
+        # lines = image_ops(lines)
         lines = formula_ops(lines)
         lines = table_ops(lines)
         with open(args.input.parent/(args.input.stem+"_for_zhihu.md"), "w+", encoding=chatest["encoding"]) as fw:

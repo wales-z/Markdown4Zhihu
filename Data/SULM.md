@@ -74,10 +74,9 @@ $$
 
 ### 3.1 提取 aspect-sentiment 对
 
-在这一步中，我们利用最先进的 “industrial-strength” 情感分析系统 Opinion Parser (OP) 从评论文本中提取 aspect 表达。  OP 是一种无监督的基于 aspect 的情感分析系统。 它执行两个关键功能， aspect 提取和 aspect 情感分类。  aspect 提取旨在提取已被表达某些情感的情感目标。  这些目标通常是实体（例如，产品或服务）的不同 aspect ，它们是我们上下文中的物品。 aspect 情感分类对在 aspect 表达的情感是积极的、中性的还是消极的进行分类。 例如，从句子“The food is great”中，“food”应该被 aspect 提取子系统提取为一个 aspect 或目标，并且“food”的意见应该被 aspect 情感分类子系统归类为positive 。  Opinion Parser 中使用的 aspect 提取算法称为双重传播 (double propagation, DP) [21]。 它基于这样一种思想，即情感总是有一个目标 aspect ，它们在句子中的表达具有某种句法关系。
-例如，情感词“great”的目标 aspect 是“food”。 给定情感词“great”，依赖解析器 (DEPENDENCY PARSER) 可用于识别用于提取“食物”的关系。 因此，DP 的工作原理如下：给定一组种子情感词 $S$ ，执行引导程序以使用 $S$ 提取 aspect 和更多情感词，并且结果 aspect 和情感词可用于更迭代地提取。 该算法的详细信息可以在 [21] 中找到。 Aspect 情感分类基于一组情感表达（称为情感词典 sentiment lexicon）、语法分析和上下文分析，以确定一个句子对一个 aspect 是正面还是负面。 更多细节可以在[17]中找到。 我们将在第 4.2 节报告其性能。
+在这一步中，我们利用最先进的 “industrial-strength” 情感分析系统 Opinion Parser (OP) 从评论文本中提取 aspect 表达。  OP 是一种无监督的基于 aspect 的情感分析系统。 它执行两个关键功能， aspect 提取和 aspect 情感分类。  aspect 提取旨在提取已被表达某些情感的情感目标。  这些目标通常是实体（例如，产品或服务）的不同 aspect ，它们是我们上下文中的物品。 aspect 情感分类对在 aspect 表达的情感是积极的、中性的还是消极的进行分类。 例如，从句子“The food is great”中，“food”应该被 aspect 提取子系统提取为一个 aspect 或目标，并且“food”的意见应该被 aspect 情感分类子系统归类为positive 。  Opinion Parser 中使用的 aspect 提取算法称为双重传播 (double propagation, DP) [21]。 它基于这样一种思想，即情感总是有一个目标 aspect ，它们在句子中的表达具有某种句法关系。例如，情感词“great”的目标 aspect 是“food”。 给定情感词“great”，依赖解析器 (DEPENDENCY PARSER) 可用于识别用于提取“食物”的关系。 因此，DP 的工作原理如下：给定一组种子情感词 $S$ ，执行引导程序以使用 $S$ 提取 aspect 和更多情感词，并且结果 aspect 和情感词可用于更迭代地提取。 该算法的详细信息可以在 [21] 中找到。 Aspect 情感分类基于一组情感表达（称为情感词典 sentiment lexicon）、语法分析和上下文分析，以确定一个句子对一个 aspect 是正面还是负面。 更多细节可以在[17]中找到。 我们将在第 4.2 节报告其性能。
 
-在我们的研究中，我们将 OP 应用于给定应用程序（例如，餐厅）的 aspect 级别的评论集合 $R$。  OP 建立一组出现在 R 中的 aspect  $\mathbb A$，对于每个评论 $r \in R$，OP 识别一组出现在 $r$ 中的 aspect  $A_r$ 和相应的情绪意见 $o^k_{ui} \in \{0, 1\}$，其中 1 是正面的（例如 ) 和 0 是负数。
+在我们的研究中，我们将 OP 应用于给定应用场景（例如，餐厅）的 aspect 级别的评论集合 $R$。  OP 建立一组出现在 R 中的 aspect  $\mathbb A$，对于每个评论 $r \in R$，OP 识别一组出现在 $r$ 中的 aspect  $A_r$ 和相应的情绪意见 $o^k_{ui} \in \{0, 1\}$，其中 1 是正面的（例如 ) 和 0 是负数。
 
 我们使用识别到的 aspect 和情感来训练我们的模型，如本节其余部分所述。
 
@@ -85,7 +84,7 @@ $$
 
 情感效用Logistic模型 (SULM) 假设对于消费物品 $i$ 的每个 aspect  $k$，用户 $u$ 可以给出情感效用值 $s^k_{u,i} \in \mathbb R$ 表示对物品 $i$ 的 aspect  $k$ 的满意度。这些效用值无法从用户评论中观察到。取而代之的是，我们观察 OP 的输出，该输出仅识别所表达情感的二进制值 $o^k_{ui} \in \{0, 1\}$。因此，我们估计实际情感效用值 $s^k_{u,i}$ ，通过以下方式：使它们在应用Logistic函数 (1) 后拟合从评论中提取二元情感值。
 
-此外，SULM 使用矩阵分解方法 [13] 估计每个 aspect  $k$ 的情绪效用值：
+此外，SULM 使用矩阵分解方法 [13] 估计每个 aspect  $k$ 的情感效用值：
 $$
 \hat s^k_{u,i}(\theta_s)=\mu^k + b^k_u + (q^k_i)^T \cdot p^k_u
 \tag5
@@ -109,7 +108,7 @@ $$
 \cdot (z^k + w^k_u + v^k_i)
 \tag7
 $$
-其中 $z^k$ 是表示aspect $k$ 在应用场景（例如餐馆）中的相对重要性的一般系数。 此外，每个用户 $u$ 对于整体满意度可能具有个人偏好和不同 aspect 的特定重要性值 (specific values of importance of aspects)，因此，系数 $w^k_u$ 表示用户 $u$ 对于 aspect $k$ 的这种个人的重要性值。 类似地，每个物品 $i$ 都有自己的特性，系数 $v^k_i$ 决定了物品 $i$ 的aspect $k$ 的重要性值。 我们用 $\theta_r = (Z,W ,V )$ 表示这些新系数，用 $θ = (θ_r, θ_s ) $表示模型中所有系数的集合。
+其中 $z^k$ 是表示aspect $k$ 在应用场景（例如餐馆）中的相对重要性的一般系数。 此外，每个用户 $u$ 对于整体满意度可能具有个人偏好和不同 aspect 的特定重要性值 (specific values of importance of aspects)，因此，系数 $w^k_u$ 表示 aspect $k$对于用户 $u$  的这种个人的重要性值。 类似地，每个物品 $i$ 都有自己的特性，系数 $v^k_i$ 决定了物品 $i$ 的aspect $k$ 的重要性值。 我们用 $\theta_r = (Z,W ,V )$ 表示这些新系数，用 $θ = (θ_r, θ_s ) $表示模型中所有系数的集合。
 
 此外，在我们的模型中，我们没有估计用户会给物品的评分并最小化 RMSE 性能指标，而是遵循以前工作（例如 [2]）中提倡的替代方法，并将评分分为“喜欢” (like) 和“不喜欢” (dislike)。 在传统的五星评分设定中，我们会将“喜欢”评分映射到 $\{4, 5\}$，将“不喜欢”评分映射到 $\{1, 2, 3\}$。 因此，我们将推荐回归转化为分类问题。
 
